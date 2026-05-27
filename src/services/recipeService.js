@@ -10,4 +10,14 @@ async function searchRecipes(searchText) {
   return data.results;
 }
 
-export default searchRecipes;
+async function getRecipeDetails(id) {
+  const response = await fetch(
+    `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data;
+}
+
+export { searchRecipes, getRecipeDetails };

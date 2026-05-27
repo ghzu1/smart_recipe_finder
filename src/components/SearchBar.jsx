@@ -1,5 +1,5 @@
 import { useState } from "react";
-import searchRecipes from "../services/recipeService";
+import { searchRecipes } from "../services/recipeService";
 
 function SearchBar({ setRecipes }) {
   const [searchText, setSearchText] = useState("");

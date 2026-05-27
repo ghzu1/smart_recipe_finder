@@ -35,3 +35,9 @@
 .recipe-card button:hover {
   background-color: #ff5252;
 }
+.details-card {
+  background-color: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
