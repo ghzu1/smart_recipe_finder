@@ -14,11 +14,11 @@ function App() {
     const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(savedFavorites);
   }, []);
-  
+
   useEffect(() => {
-  const savedInventory = JSON.parse(localStorage.getItem("inventory")) || [];
-  setInventory(savedInventory);
-}, []);
+    const savedInventory = JSON.parse(localStorage.getItem("inventory")) || [];
+    setInventory(savedInventory);
+  }, []);
 
   function addToFavorites(recipe) {
     const alreadyExists = favorites.find(
@@ -45,25 +45,60 @@ function App() {
   }
 
   async function showRecipeDetails(id) {
-  const recipeDetails = await getRecipeDetails(id);
-  console.log(recipeDetails);
-  setSelectedRecipe(recipeDetails);
-}
-function searchFromInventory() {
-  const ingredients = inventory.map((item) => item.name).join(",");
+    const recipeDetails = await getRecipeDetails(id);
+    console.log(recipeDetails);
+    setSelectedRecipe(recipeDetails);
+  }
 
-  if (ingredients === "") {
+  function searchFromInventory() {
+    const ingredients = inventory.map((item) => item.name).join(",");
+
+    if (ingredients === "") {
+      return;
+    }
+
+    setRecipes([]);
+
+    fetch(
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
+    )
+      .then((response) => response.json())
+      .then((data) => setRecipes(data));
+  }
+
+  
+  function cookRecipe() {
+  if (!selectedRecipe || !selectedRecipe.extendedIngredients) {
     return;
   }
 
-  setRecipes([]);
+  const usedIngredients = selectedRecipe.extendedIngredients.map((ingredient) =>
+    ingredient.name.toLowerCase()
+  );
 
-  fetch(
-    `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
-  )
-    .then((response) => response.json())
-    .then((data) => setRecipes(data));
+  const updatedInventory = inventory
+    .map((item) => {
+      const itemName = item.name.toLowerCase();
+
+      const isUsed = usedIngredients.some((ingredient) =>
+        ingredient.includes(itemName)
+      );
+
+      if (isUsed) {
+        return {
+          ...item,
+          amount: item.amount - 1,
+        };
+      }
+
+      return item;
+    })
+    .filter((item) => item.amount > 0);
+
+  setInventory(updatedInventory);
+  localStorage.setItem("inventory", JSON.stringify(updatedInventory));
 }
+
   return (
     <div>
       <Navbar />
@@ -71,13 +106,15 @@ function searchFromInventory() {
       <h1>Welcome to Smart Recipe Finder</h1>
 
       <SearchBar setRecipes={setRecipes} />
+
       <Inventory inventory={inventory} setInventory={setInventory} />
+
       <button onClick={searchFromInventory}>
-       Find Recipes From Inventory
-       </button>
+        Find Recipes From Inventory
+      </button>
 
       <h2>Search Results</h2>
-        
+
       {selectedRecipe && (
         <div>
           <h2>{selectedRecipe.title}</h2>
@@ -87,6 +124,10 @@ function searchFromInventory() {
 
           <h3>Instructions</h3>
           <p>{selectedRecipe.instructions}</p>
+
+          <button onClick={cookRecipe}>
+            Cook Recipe
+          </button>
         </div>
       )}
 
