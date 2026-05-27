@@ -2,16 +2,23 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
 import { getRecipeDetails } from "./services/recipeService";
+import Inventory from "./components/Inventory";
 
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(savedFavorites);
   }, []);
+  
+  useEffect(() => {
+  const savedInventory = JSON.parse(localStorage.getItem("inventory")) || [];
+  setInventory(savedInventory);
+}, []);
 
   function addToFavorites(recipe) {
     const alreadyExists = favorites.find(
@@ -49,6 +56,7 @@ function App() {
       <h1>Welcome to Smart Recipe Finder</h1>
 
       <SearchBar setRecipes={setRecipes} />
+      <Inventory inventory={inventory} setInventory={setInventory} />
 
       <h2>Search Results</h2>
         
