@@ -12,20 +12,28 @@ function App() {
   }, []);
 
   function addToFavorites(recipe) {
-  const alreadyExists = favorites.find(
-    (favorite) => favorite.id === recipe.id
-  );
+    const alreadyExists = favorites.find(
+      (favorite) => favorite.id === recipe.id
+    );
 
-  if (alreadyExists) {
-    return;
+    if (alreadyExists) {
+      return;
+    }
+
+    const updatedFavorites = [...favorites, recipe];
+
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   }
 
-  const updatedFavorites = [...favorites, recipe];
+  function removeFromFavorites(id) {
+    const updatedFavorites = favorites.filter(
+      (favorite) => favorite.id !== id
+    );
 
-  setFavorites(updatedFavorites);
-
-  localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-}
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  }
 
   return (
     <div>
@@ -54,6 +62,9 @@ function App() {
           <div className="recipe-card" key={recipe.id}>
             <img src={recipe.image} alt={recipe.title} width="200" />
             <h3>{recipe.title}</h3>
+            <button onClick={() => removeFromFavorites(recipe.id)}>
+              ❌ Remove
+            </button>
           </div>
         ))}
       </div>
