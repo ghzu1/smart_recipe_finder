@@ -121,21 +121,41 @@ function App() {
 
       <h2>Search Results</h2>
 
-      {selectedRecipe && (
-        <div className="details-card">
-          <h2>{selectedRecipe.title}</h2>
-          <img src={selectedRecipe.image} alt={selectedRecipe.title} width="300" />
-          <p>Ready in: {selectedRecipe.readyInMinutes} minutes</p>
-          <p>Servings: {selectedRecipe.servings}</p>
+    {selectedRecipe && (
+     <div className="details-card">
+      <div className="modal-card">
+      <button className="close-button" onClick={() => setSelectedRecipe(null)}>
+        ✕
+      </button>
+      <h2>{selectedRecipe.title}</h2>
 
-          <h3>Instructions</h3>
-          <p>{selectedRecipe.instructions}</p>
+      <img
+      src={selectedRecipe.image}
+      alt={selectedRecipe.title}
+      className="details-image"
+      />
 
-          <button onClick={cookRecipe}>
-            Cook Recipe
-          </button>
-        </div>
-      )}
+      <div className="details-info">
+        <p>⏱ Ready in: {selectedRecipe.readyInMinutes} minutes</p>
+        <p>🍽 Servings: {selectedRecipe.servings}</p>
+      </div>
+
+     <h3>Ingredients</h3>
+
+    <ul className="ingredients-list">
+      {selectedRecipe.extendedIngredients.map((ingredient) => (
+        <li key={ingredient.id}>{ingredient.original}</li>
+      ))}
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <p className="instructions">{selectedRecipe.instructions}</p>
+
+    <button onClick={cookRecipe}>Cook Recipe</button>
+  </div>
+  </div>
+)}
 
       <div className="recipe-container">
         {recipes.map((recipe) => (
