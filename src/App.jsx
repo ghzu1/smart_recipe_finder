@@ -49,6 +49,21 @@ function App() {
   console.log(recipeDetails);
   setSelectedRecipe(recipeDetails);
 }
+function searchFromInventory() {
+  const ingredients = inventory.map((item) => item.name).join(",");
+
+  if (ingredients === "") {
+    return;
+  }
+
+  setRecipes([]);
+
+  fetch(
+    `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => setRecipes(data));
+}
   return (
     <div>
       <Navbar />
@@ -57,6 +72,9 @@ function App() {
 
       <SearchBar setRecipes={setRecipes} />
       <Inventory inventory={inventory} setInventory={setInventory} />
+      <button onClick={searchFromInventory}>
+       Find Recipes From Inventory
+       </button>
 
       <h2>Search Results</h2>
         
