@@ -1,3 +1,4 @@
+import "./App.css";
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
@@ -100,10 +101,15 @@ function App() {
 }
 
   return (
-    <div>
+  <div className="app-container">
       <Navbar />
+     <div className="hero">
+     <h1>Smart Recipe Finder</h1>
 
-      <h1>Welcome to Smart Recipe Finder</h1>
+      <p>
+       Find recipes based on the ingredients you already have at home.
+      </p>
+    </div>
 
       <SearchBar setRecipes={setRecipes} />
 
@@ -116,7 +122,7 @@ function App() {
       <h2>Search Results</h2>
 
       {selectedRecipe && (
-        <div>
+        <div className="details-card">
           <h2>{selectedRecipe.title}</h2>
           <img src={selectedRecipe.image} alt={selectedRecipe.title} width="300" />
           <p>Ready in: {selectedRecipe.readyInMinutes} minutes</p>

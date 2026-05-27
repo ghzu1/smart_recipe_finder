@@ -47,13 +47,14 @@ function Inventory({ inventory, setInventory }) {
         <button type="submit">Add</button>
       </form>
 
-      <ul>
-        {inventory.map((item, index) => (
-          <li key={index}>
-            {item.name} - {item.amount}
-          </li>
-        ))}
-      </ul>
+      <div className="inventory-container">
+         {inventory.map((item, index) => (
+          <div className="inventory-card" key={index}>
+          <h3>{item.name}</h3>
+        <p>Amount: {item.amount}</p>
+    </div>
+  ))}
+</div>
     </div>
   );
 }
