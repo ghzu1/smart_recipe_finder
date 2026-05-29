@@ -2,14 +2,16 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
-import { getRecipeDetails } from "./services/recipeService";
 import Inventory from "./components/Inventory";
+import { getRecipeDetails, searchRecipes } from "./services/recipeService"
+import RecentSearches from "./components/RecentSearches"
 
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [inventory, setInventory] = useState([]);
+  const [recentSearches, setRecentSearches] = useState([])
 
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -20,6 +22,17 @@ function App() {
     const savedInventory = JSON.parse(localStorage.getItem("inventory")) || [];
     setInventory(savedInventory);
   }, []);
+
+  useEffect(() => { 
+      const savedInventory = JSON.parse(localStorage.getItem("inventory")) || [];
+      setInventory(savedInventory);
+    }, []); 
+
+
+    useEffect(() => { 
+      const saved = JSON.parse(localStorage.getItem("recentSearches")) || []
+      setRecentSearches(saved)
+    }, [])
 
   function addToFavorites(recipe) {
     const alreadyExists = favorites.find(
@@ -100,6 +113,20 @@ function App() {
   localStorage.setItem("inventory", JSON.stringify(updatedInventory));
 }
 
+ function saveSearch(term) {
+      if (!term || recentSearches.includes(term)) return
+      const updated = [term, ...recentSearches].slice(0, 5)
+      setRecentSearches(updated)
+      localStorage.setItem("recentSearches", JSON.stringify(updated))
+    }
+  
+    async function handleSearch(term) {
+      if (!term) return
+      saveSearch(term)
+      const results = await searchRecipes(term)
+      setRecipes(results)
+    }
+
   return (
   <div className="app-container">
       <Navbar />
@@ -111,8 +138,12 @@ function App() {
       </p>
     </div>
 
-      <SearchBar setRecipes={setRecipes} />
+        <SearchBar setRecipes={setRecipes} onSearch={handleSearch} />
 
+        <RecentSearches
+          recentSearches={recentSearches}
+          onSearchClick={(term) => handleSearch(term)}
+        />
       <Inventory inventory={inventory} setInventory={setInventory} />
 
       <button onClick={searchFromInventory}>

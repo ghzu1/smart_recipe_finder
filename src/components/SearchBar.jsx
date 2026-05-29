@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { searchRecipes } from "../services/recipeService";
 
-function SearchBar({ setRecipes }) {
+function SearchBar({ setRecipes, onSearch }) {
   const [searchText, setSearchText] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    const recipes = await searchRecipes(searchText);
-
-    setRecipes(recipes);
+    if (onSearch){
+      onSearch(searchText)
+    }else{
+     const recipes = await searchRecipes(searchText);
+     setRecipes(recipes);
   }
-
+}
+  
   return (
     <form onSubmit={handleSubmit}>
       <input
