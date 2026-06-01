@@ -127,6 +127,13 @@ function App() {
       setRecipes(results)
     }
 
+    function removeRecentSearch(index) {
+    const updated = recentSearches.filter((_, i) => i !== index)
+    setRecentSearches(updated)
+    localStorage.setItem("recentSearches", JSON.stringify(updated))
+    }
+
+
   return (
   <div className="app-container">
       <Navbar />
@@ -143,6 +150,7 @@ function App() {
         <RecentSearches
           recentSearches={recentSearches}
           onSearchClick={(term) => handleSearch(term)}
+          onRemove={removeRecentSearch}
         />
       <Inventory inventory={inventory} setInventory={setInventory} />
 

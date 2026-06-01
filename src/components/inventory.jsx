@@ -25,6 +25,12 @@ function Inventory({ inventory, setInventory }) {
     setAmount("");
   }
 
+  function removeIngredient(index) {
+      const updated = inventory.filter((_, i) => i !== index)
+      setInventory(updated)
+      localStorage.setItem("inventory", JSON.stringify(updated))
+    }
+
   return (
     <div>
       <h2>Kitchen Inventory</h2>
@@ -48,10 +54,11 @@ function Inventory({ inventory, setInventory }) {
       </form>
 
       <div className="inventory-container">
-         {inventory.map((item, index) => (
+        {inventory.map((item, index) => (
           <div className="inventory-card" key={index}>
           <h3>{item.name}</h3>
         <p>Amount: {item.amount}</p>
+        <button onClick={() => removeIngredient(index)}>Remove</button>
     </div>
   ))}
 </div>
