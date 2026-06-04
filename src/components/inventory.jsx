@@ -7,13 +7,16 @@ function Inventory({ inventory, setInventory }) {
   function addIngredient(e) {
     e.preventDefault();
 
-    if (ingredientName === "" || amount === "") {
+    const name = ingredientName.trim();
+    const ingredientAmount = Number(amount);
+
+    if (name === "" || ingredientAmount <= 0) {
       return;
     }
 
     const newIngredient = {
-      name: ingredientName,
-      amount: Number(amount),
+      name: name,
+      amount: ingredientAmount,
     };
 
     const updatedInventory = [...inventory, newIngredient];
@@ -26,9 +29,10 @@ function Inventory({ inventory, setInventory }) {
   }
 
   function removeIngredient(index) {
-    const updated = inventory.filter((_, i) => i !== index);
-    setInventory(updated);
-    localStorage.setItem("inventory", JSON.stringify(updated));
+    const updatedInventory = inventory.filter((_, i) => i !== index);
+
+    setInventory(updatedInventory);
+    localStorage.setItem("inventory", JSON.stringify(updatedInventory));
   }
 
   return (
@@ -47,6 +51,7 @@ function Inventory({ inventory, setInventory }) {
           type="number"
           placeholder="Amount"
           value={amount}
+          min="1"
           onChange={(e) => setAmount(e.target.value)}
         />
 
