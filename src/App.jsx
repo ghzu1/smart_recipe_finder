@@ -3,7 +3,11 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
 import Inventory from "./components/inventory";
-import { getRecipeDetails, searchRecipes } from "./services/recipeService";
+import {
+  getRecipeDetails,
+  searchRecipes,
+  searchRecipesByIngredients,
+} from "./services/recipeService";
 import RecentSearches from "./components/RecentSearches";
 
 function loadSavedList(key) {
@@ -54,22 +58,17 @@ function App() {
     setSelectedRecipe(recipeDetails);
   }
 
-  function searchFromInventory() {
+  async function searchFromInventory() {
     const ingredients = inventory.map((item) => item.name).join(",");
 
     if (ingredients === "") {
       return;
     }
 
-    const encodedIngredients = encodeURIComponent(ingredients);
-
     setRecipes([]);
 
-    fetch(
-      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${encodedIngredients}&number=12&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
-    )
-      .then((response) => response.json())
-      .then((data) => setRecipes(data));
+    const results = await searchRecipesByIngredients(ingredients);
+    setRecipes(results);
   }
 
   function cookRecipe() {
