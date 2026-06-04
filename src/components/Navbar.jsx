@@ -4,8 +4,9 @@ function Navbar() {
       <h2>Smart Recipe Finder</h2>
 
       <div className="nav-links">
-        <a href="#">Home</a>
-        <a href="#">Favorites</a>
+        <a href="#search">Search</a>
+        <a href="#inventory">Inventory</a>
+        <a href="#favorites">Favorites</a>
       </div>
     </nav>
   );

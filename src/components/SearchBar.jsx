@@ -6,16 +6,17 @@ function SearchBar({ setRecipes, onSearch }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (onSearch){
-      onSearch(searchText)
-    }else{
-     const recipes = await searchRecipes(searchText);
-     setRecipes(recipes);
+
+    if (onSearch) {
+      onSearch(searchText);
+    } else {
+      const recipes = await searchRecipes(searchText);
+      setRecipes(recipes);
+    }
   }
-}
-  
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="search-form" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Search for a recipe..."

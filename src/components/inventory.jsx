@@ -26,16 +26,16 @@ function Inventory({ inventory, setInventory }) {
   }
 
   function removeIngredient(index) {
-      const updated = inventory.filter((_, i) => i !== index)
-      setInventory(updated)
-      localStorage.setItem("inventory", JSON.stringify(updated))
-    }
+    const updated = inventory.filter((_, i) => i !== index);
+    setInventory(updated);
+    localStorage.setItem("inventory", JSON.stringify(updated));
+  }
 
   return (
-    <div>
+    <section className="inventory-section" id="inventory">
       <h2>Kitchen Inventory</h2>
 
-      <form onSubmit={addIngredient}>
+      <form className="inventory-form" onSubmit={addIngredient}>
         <input
           type="text"
           placeholder="Ingredient, e.g. egg"
@@ -53,16 +53,20 @@ function Inventory({ inventory, setInventory }) {
         <button type="submit">Add</button>
       </form>
 
-      <div className="inventory-container">
-        {inventory.map((item, index) => (
-          <div className="inventory-card" key={index}>
-          <h3>{item.name}</h3>
-        <p>Amount: {item.amount}</p>
-        <button onClick={() => removeIngredient(index)}>Remove</button>
-    </div>
-  ))}
-</div>
-    </div>
+      {inventory.length === 0 ? (
+        <p className="empty-state">Add ingredients you already have at home.</p>
+      ) : (
+        <div className="inventory-container">
+          {inventory.map((item, index) => (
+            <div className="inventory-card" key={index}>
+              <h3>{item.name}</h3>
+              <p>Amount: {item.amount}</p>
+              <button onClick={() => removeIngredient(index)}>Remove</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 
