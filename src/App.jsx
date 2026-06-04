@@ -8,7 +8,12 @@ import RecentSearches from "./components/RecentSearches";
 
 function loadSavedList(key) {
   const saved = localStorage.getItem(key);
-  return saved ? JSON.parse(saved) : [];
+
+  try {
+    return saved ? JSON.parse(saved) : [];
+  } catch {
+    return [];
+  }
 }
 
 function App() {
@@ -56,10 +61,12 @@ function App() {
       return;
     }
 
+    const encodedIngredients = encodeURIComponent(ingredients);
+
     setRecipes([]);
 
     fetch(
-      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${encodedIngredients}&number=12&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
     )
       .then((response) => response.json())
       .then((data) => setRecipes(data));
@@ -98,23 +105,34 @@ function App() {
   }
 
   function saveSearch(term) {
-    if (!term || recentSearches.includes(term)) return;
-    const updated = [term, ...recentSearches].slice(0, 5);
-    setRecentSearches(updated);
-    localStorage.setItem("recentSearches", JSON.stringify(updated));
+    if (!term || recentSearches.includes(term)) {
+      return;
+    }
+
+    const updatedSearches = [term, ...recentSearches].slice(0, 5);
+
+    setRecentSearches(updatedSearches);
+    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
   }
 
   async function handleSearch(term) {
-    if (!term) return;
-    saveSearch(term);
-    const results = await searchRecipes(term);
+    const searchTerm = term.trim();
+
+    if (!searchTerm) {
+      return;
+    }
+
+    saveSearch(searchTerm);
+
+    const results = await searchRecipes(searchTerm);
     setRecipes(results);
   }
 
   function removeRecentSearch(index) {
-    const updated = recentSearches.filter((_, i) => i !== index);
-    setRecentSearches(updated);
-    localStorage.setItem("recentSearches", JSON.stringify(updated));
+    const updatedSearches = recentSearches.filter((_, i) => i !== index);
+
+    setRecentSearches(updatedSearches);
+    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
   }
 
   return (
@@ -160,11 +178,14 @@ function App() {
               {recipes.map((recipe) => (
                 <div className="recipe-card" key={recipe.id}>
                   <img src={recipe.image} alt={recipe.title} width="200" />
+
                   <div className="recipe-card-content">
                     <h3>{recipe.title}</h3>
+
                     <button onClick={() => addToFavorites(recipe)}>
                       Add favorite
                     </button>
+
                     <button
                       className="secondary-button"
                       onClick={() => showRecipeDetails(recipe.id)}
@@ -190,8 +211,10 @@ function App() {
               {favorites.map((recipe) => (
                 <div className="recipe-card" key={recipe.id}>
                   <img src={recipe.image} alt={recipe.title} width="200" />
+
                   <div className="recipe-card-content">
                     <h3>{recipe.title}</h3>
+
                     <button onClick={() => removeFromFavorites(recipe.id)}>
                       Remove
                     </button>
@@ -225,6 +248,7 @@ function App() {
                   <span>Ready in</span>
                   {selectedRecipe.readyInMinutes} minutes
                 </p>
+
                 <p>
                   <span>Servings</span>
                   {selectedRecipe.servings}
