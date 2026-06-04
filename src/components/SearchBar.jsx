@@ -13,6 +13,8 @@ function SearchBar({ setRecipes, onSearch }) {
       const recipes = await searchRecipes(searchText);
       setRecipes(recipes);
     }
+
+    setSearchText("");
   }
 
   return (
