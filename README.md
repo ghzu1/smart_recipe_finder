@@ -74,11 +74,7 @@ src/
   components/
     Navbar.jsx
     SearchBar.jsx
-<<<<<<< Updated upstream
     Inventory.jsx
-=======
-    inventory.jsx
->>>>>>> Stashed changes
     RecentSearches.jsx
   App.css
   index.css
@@ -88,11 +84,7 @@ Komponenterna har följande ansvar:
 
 - `App.jsx` hanterar huvudlogiken och kopplar ihop komponenterna.
 - `SearchBar.jsx` hanterar receptsökningar.
-<<<<<<< Updated upstream
 - `Inventory.jsx` hanterar köksförrådet.
-=======
-- `inventory.jsx` hanterar köksförrådet.
->>>>>>> Stashed changes
 - `RecentSearches.jsx` visar och hanterar senaste sökningar.
 - `Navbar.jsx` visar sidans navigation.
 - `recipeService.js` innehåller funktioner för API-anrop.
