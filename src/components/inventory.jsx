@@ -3,6 +3,7 @@ import { useState } from "react";
 function Inventory({ inventory, setInventory }) {
   const [ingredientName, setIngredientName] = useState("");
   const [amount, setAmount] = useState("");
+  const [unit, setUnit] = useState("pcs");
 
   function addIngredient(e) {
     e.preventDefault();
@@ -15,14 +16,18 @@ function Inventory({ inventory, setInventory }) {
     }
 
     const existingIngredient = inventory.find(
-      (item) => item.name.toLowerCase() === name.toLowerCase()
+      (item) =>
+        item.name.toLowerCase() === name.toLowerCase() && item.unit === unit
     );
 
     let updatedInventory;
 
     if (existingIngredient) {
       updatedInventory = inventory.map((item) => {
-        if (item.name.toLowerCase() === name.toLowerCase()) {
+        if (
+          item.name.toLowerCase() === name.toLowerCase() &&
+          item.unit === unit
+        ) {
           return {
             ...item,
             amount: item.amount + ingredientAmount,
@@ -35,6 +40,7 @@ function Inventory({ inventory, setInventory }) {
       const newIngredient = {
         name: name,
         amount: ingredientAmount,
+        unit: unit,
       };
 
       updatedInventory = [...inventory, newIngredient];
@@ -45,6 +51,7 @@ function Inventory({ inventory, setInventory }) {
 
     setIngredientName("");
     setAmount("");
+    setUnit("pcs");
   }
 
   function removeIngredient(index) {
@@ -74,6 +81,16 @@ function Inventory({ inventory, setInventory }) {
           onChange={(e) => setAmount(e.target.value)}
         />
 
+        <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+          <option value="pcs">pcs</option>
+          <option value="g">g</option>
+          <option value="kg">kg</option>
+          <option value="ml">ml</option>
+          <option value="l">l</option>
+          <option value="tsp">tsp</option>
+          <option value="tbsp">tbsp</option>
+        </select>
+
         <button type="submit">Add</button>
       </form>
 
@@ -84,7 +101,9 @@ function Inventory({ inventory, setInventory }) {
           {inventory.map((item, index) => (
             <div className="inventory-card" key={index}>
               <h3>{item.name}</h3>
-              <p>Amount: {item.amount}</p>
+              <p>
+                Amount: {item.amount} {item.unit || "pcs"}
+              </p>
               <button onClick={() => removeIngredient(index)}>Remove</button>
             </div>
           ))}
