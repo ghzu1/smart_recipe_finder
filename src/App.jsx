@@ -140,15 +140,54 @@ function App() {
 
       <main>
         <section className="hero" id="search">
-          <p className="eyebrow">Simple cooking helper</p>
-          <h1>Smart Recipe Finder</h1>
-          <p>
-            Find recipes based on the ingredients you already have at home.
-          </p>
+          <div className="hero-content">
+            <p className="eyebrow">Smart cooking made simple</p>
+
+            <h1>
+              Find recipes that match your <span>kitchen</span>
+            </h1>
+
+            <p>
+              Search recipes, save your favorites and use your own ingredients
+              to get cooking ideas in seconds.
+            </p>
+
+            <div className="hero-highlights">
+              <div>
+                <strong>12+</strong>
+                <span>recipe ideas</span>
+              </div>
+
+              <div>
+                <strong>5</strong>
+                <span>recent searches</span>
+              </div>
+
+              <div>
+                <strong>Local</strong>
+                <span>saved data</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-visual" aria-hidden="true">
+            <div className="food-orbit">
+              <span>🍅</span>
+              <span>🥑</span>
+              <span>🍳</span>
+              <span>🥕</span>
+             </div>
+
+             <div className="hero-preview-card">
+              <p> Today’s idea</p>
+              <h3>Creamy Pasta</h3>
+              <span>Ready in 23 min</span>
+            </div>
+           </div>
         </section>
 
         <section className="search-panel">
-          <SearchBar setRecipes={setRecipes} onSearch={handleSearch} />
+           <SearchBar  setRecipes={setRecipes} onSearch={handleSearch} />
 
           <RecentSearches
             recentSearches={recentSearches}
@@ -224,14 +263,14 @@ function App() {
           )}
         </section>
 
-        {selectedRecipe && (
+        {selectedRecipe &&(
           <div className="details-card">
             <div className="modal-card">
               <button
                 className="close-button"
                 onClick={() => setSelectedRecipe(null)}
               >
-                x
+                ×
               </button>
 
               <h2>{selectedRecipe.title}</h2>
@@ -240,7 +279,7 @@ function App() {
                 src={selectedRecipe.image}
                 alt={selectedRecipe.title}
                 className="details-image"
-              />
+               />
 
               <div className="details-info">
                 <p>
