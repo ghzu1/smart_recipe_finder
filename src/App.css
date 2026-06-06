@@ -58,7 +58,8 @@ button:active {
 
 button:focus-visible,
 a:focus-visible,
-input:focus-visible {
+input:focus-visible
+select:focus-visible{
   outline: 3px solid rgba(63, 143, 95, 0.35);
   outline-offset: 3px;
 }
@@ -213,10 +214,6 @@ main {
   box-shadow: 0 8px 20px rgba(82, 52, 24, 0.08);
 }
 
-.eyebrow::before {
-  content: "✨";
-}
-
 .hero h1 {
   color: var(--green-dark);
   font-size: clamp(42px, 8vw, 82px);
@@ -287,21 +284,14 @@ main {
   letter-spacing: -0.6px;
 }
 
-.inventory-section h2::before {
-  content: "🥕";
-}
-
-.section-block h2::before {
-  content: "🍽️";
-}
 
 #favorites h2::before {
   content: "❤️";
 }
 
 .inventory-form {
-  grid-template-columns: minmax(0, 1fr) 160px auto;
-  max-width: 780px;
+  grid-template-columns: minmax(0, 1fr) 130px 120px auto;
+  max-width: 880px;
 }
 
 .inventory-container {
@@ -474,10 +464,6 @@ main {
   border-radius: 22px;
   padding: 20px;
   backdrop-filter: blur(12px);
-}
-
-.empty-state::before {
-  content: "💡 ";
 }
 
 .details-card {
@@ -1060,4 +1046,26 @@ main {
   .hero-preview-card h3 {
     font-size: 26px;
   }
+}
+select {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--ink);
+  padding: 14px 18px;
+  outline: none;
+  font: inherit;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+select:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(63, 143, 95, 0.14);
+  transform: translateY(-1px);
 }
