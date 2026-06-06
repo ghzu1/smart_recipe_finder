@@ -14,12 +14,31 @@ function Inventory({ inventory, setInventory }) {
       return;
     }
 
-    const newIngredient = {
-      name: name,
-      amount: ingredientAmount,
-    };
+    const existingIngredient = inventory.find(
+      (item) => item.name.toLowerCase() === name.toLowerCase()
+    );
 
-    const updatedInventory = [...inventory, newIngredient];
+    let updatedInventory;
+
+    if (existingIngredient) {
+      updatedInventory = inventory.map((item) => {
+        if (item.name.toLowerCase() === name.toLowerCase()) {
+          return {
+            ...item,
+            amount: item.amount + ingredientAmount,
+          };
+        }
+
+        return item;
+      });
+    } else {
+      const newIngredient = {
+        name: name,
+        amount: ingredientAmount,
+      };
+
+      updatedInventory = [...inventory, newIngredient];
+    }
 
     setInventory(updatedInventory);
     localStorage.setItem("inventory", JSON.stringify(updatedInventory));
