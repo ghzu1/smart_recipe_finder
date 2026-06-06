@@ -213,9 +213,6 @@ main {
   box-shadow: 0 8px 20px rgba(82, 52, 24, 0.08);
 }
 
-.eyebrow::before {
-  content: "✨";
-}
 
 .hero h1 {
   color: var(--green-dark);
@@ -287,13 +284,6 @@ main {
   letter-spacing: -0.6px;
 }
 
-.inventory-section h2::before {
-  content: "🥕";
-}
-
-.section-block h2::before {
-  content: "🍽️";
-}
 
 #favorites h2::before {
   content: "❤️";
@@ -474,10 +464,6 @@ main {
   border-radius: 22px;
   padding: 20px;
   backdrop-filter: blur(12px);
-}
-
-.empty-state::before {
-  content: "💡 ";
 }
 
 .details-card {
